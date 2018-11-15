@@ -3,12 +3,20 @@
 using namespace std;
 
 BordVakje::BordVakje():
-	kleur('.'){
+	kleur(kleur0){
 	for(int i = 0;i < 8;i++) buren[i] = nullptr;
 }
 
 OthelloBord::OthelloBord():
 	hoogte(8), breedte(8){
+	bouwbord();
+}
+
+OthelloBord::~OthelloBord() {
+	
+}
+
+void OthelloBord::bouwbord(){
 	ingang = maakrij(breedte);
 	BordVakje* vorige = ingang;
 	for(int i = 1;i < hoogte;i++){
@@ -16,9 +24,18 @@ OthelloBord::OthelloBord():
 		rits(vorige, nieuw);
 		vorige = nieuw;
 	}
+	
+	get(breedte / 2 - 1, hoogte / 2 - 1)->kleur = kleur1;
+	get(breedte / 2 - 1, hoogte / 2)->kleur = kleur2;
+	get(breedte / 2, hoogte / 2 - 1)->kleur = kleur2;
+	get(breedte / 2, hoogte / 2)->kleur = kleur1;
 }
 
-OthelloBord::~OthelloBord() {
+void OthelloBord::randomzet(char kl, int& i, int& j){
+	
+}
+
+void OthelloBord::menszet(char kl, bool& gedaan, int& i, int& j){
 	
 }
 
@@ -40,6 +57,41 @@ void OthelloBord::drukaf(){
 	std::cout << "-";
 	for(int i = 0;i < breedte;i++) std::cout << "--";
 	std::cout << "--" << std::endl;
+}
+
+bool OthelloBord::klaar(){
+	bool klaar = true;
+	for(int i = 0;i < hoogte;i++){
+		for(int j = 0;j < breedte;j++){
+			klaar = klaar || magzet(i, j, kleur1);
+			klaar = klaar || magzet(i, j, kleur2);
+		}
+	}
+	return klaar;
+}
+
+int OthelloBord::gewonnen(char& kl){
+	
+	
+	return 0;
+}
+
+void OthelloBord::doezet(int i, int j, char kl){
+	get(i, j)->kleur = kl;
+}
+
+bool OthelloBord::magzet(int i, int j, char kl){
+	
+	
+	return false;
+}
+
+BordVakje* OthelloBord::get(int i, int j){
+	if(i < 0 || i > hoogte || j < 0 || j > breedte) return nullptr;
+	BordVakje* vakje = ingang;
+	for(int k = 0;k < i;k++) vakje = vakje->buren[4];
+	for(int k = 0;k < j;k++) vakje = vakje->buren[2];
+	return vakje;
 }
 
 void OthelloBord::rits(BordVakje* boven, BordVakje* onder){
