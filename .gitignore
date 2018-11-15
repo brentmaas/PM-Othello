@@ -1,0 +1,5 @@
+.settings/
+.cproject
+.project
+Assignment4.exe
+*.o
