@@ -27,6 +27,38 @@ void infoBlokje(){
 int main(){
 	infoBlokje();
 	
+	bool speler1mens, speler2mens;
+	
+	while(true){
+		std::cout << "Speler 1 (wit): [M]ens of [C]omputer: ";
+		char optie = std::cin.get();
+		while(optie == '\n') optie = std::cin.get();
+		if(optie == 'm' || optie == 'M'){
+			speler1mens = true;
+			break;
+		}
+		if(optie == 'c' || optie == 'C'){
+			speler1mens = false;
+			break;
+		}
+		std::cout << "Ongeldige keuze: '" << optie << "'!" << std::endl;
+	}
+	
+	while(true){
+		std::cout << "Speler 2 (zwart): [M]ens of [C]omputer: ";
+		char optie = std::cin.get();
+		while(optie == '\n') optie = std::cin.get();
+		if(optie == 'm' || optie == 'M'){
+			speler2mens = true;
+			break;
+		}
+		if(optie == 'c' || optie == 'C'){
+			speler2mens = false;
+			break;
+		}
+		std::cout << "Ongeldige keuze: '" << optie << "'!" << std::endl;
+	}
+	
 	OthelloBord bord;
 	bord.drukaf();
 	

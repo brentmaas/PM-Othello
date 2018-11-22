@@ -10,7 +10,7 @@ BordVakje::BordVakje():
 }
 
 //Officieel begint zwart
-OthelloBord::OthelloBord(): hoogte(8), breedte(8), beurt(kleur2), speler1(kleur1), speler2(kleur2){
+OthelloBord::OthelloBord(): hoogte(8), breedte(8), zetten(0), beurt(kleur2), speler1(kleur1), speler2(kleur2){
 	srand(time(0));
 	bouwbord();
 }
@@ -74,6 +74,7 @@ void OthelloBord::drukaf(){
 }
 
 bool OthelloBord::klaar(){
+	if(zetten == hoogte * breedte) return true;
 	for(int i = 0;i < hoogte;i++){
 		for(int j = 0;j < breedte;j++){
 			if(magzet(i, j, beurt)) return false;
@@ -98,56 +99,10 @@ void OthelloBord::doezet(int i, int j, char kl){
 	if(checkrichting(i, j, 5, kl)) vulrichting(i, j, 5, kl);
 	if(checkrichting(i, j, 6, kl)) vulrichting(i, j, 6, kl);
 	if(checkrichting(i, j, 7, kl)) vulrichting(i, j, 7, kl);
+	zetten++;
 }
 
 bool OthelloBord::magzet(int i, int j, char kl){
-	//Deze is fout btw
-	/*BordVakje* vakje = get(i, j);
-	if(vakje->kleur != kleur0) return false;
-	BordVakje* boven = vakje->buren[0];
-	BordVakje* rechtsboven = vakje->buren[1];
-	BordVakje* rechts = vakje->buren[2];
-	BordVakje* rechtsonder = vakje->buren[3];
-	BordVakje* onder = vakje->buren[4];
-	BordVakje* linksonder = vakje->buren[5];
-	BordVakje* links = vakje->buren[6];
-	BordVakje* linksboven = vakje->buren[7];
-	char anderekleur = kleur1;
-	if(kl == kleur1) anderekleur = kleur2;
-	bool b = boven->kleur == anderekleur;
-	bool rb = rechtsboven->kleur == anderekleur;
-	bool r = rechts->kleur == anderekleur;
-	bool ro = rechtsonder->kleur == anderekleur;
-	bool o = onder->kleur == anderekleur;
-	bool lo = linksonder->kleur == anderekleur;
-	bool l = links->kleur == anderekleur;
-	bool lb = linksboven->kleur == anderekleur;
-	boven = boven->buren[0];
-	rechtsboven = rechtsboven->buren[1];
-	rechts = rechts->buren[2];
-	rechtsonder = rechtsonder->buren[3];
-	onder = onder->buren[4];
-	linksonder = linksonder->buren[5];
-	links = links->buren[6];
-	linksboven = linksboven->buren[7];
-	while(b || rb || r || ro || o || lo || l || lb){
-		if(b && boven != nullptr && boven->kleur == kleur0) return true;
-		else if(boven == nullptr || boven->kleur == kl) b = false;
-		if(rb && rechtsboven != nullptr && rechtsboven->kleur == kleur0) return true;
-		else if(rechtsboven == nullptr || rechtsboven->kleur == kl) rb = false;
-		if(r && rechts != nullptr && rechts->kleur == kleur0) return true;
-		else if(rechts == nullptr || rechts->kleur == kl) r = false;
-		if(ro && rechtsonder != nullptr && rechtsonder->kleur == kleur0) return true;
-		else if(rechtsonder == nullptr || rechtsonder->kleur == kl) ro = false;
-		if(o && onder != nullptr && onder->kleur == kleur0) return true;
-		else if(onder == nullptr || onder->kleur == kl) o = false;
-		if(lo && linksonder != nullptr && linksonder->kleur == kleur0) return true;
-		else if(linksonder == nullptr || linksonder->kleur == kl) lo = false;
-		if(l && links != nullptr && links->kleur == kleur0) return true;
-		else if(links == nullptr || links->kleur == kl) l = false;
-		if(lb && linksboven != nullptr && linksboven->kleur == kleur0) return true;
-		else if(linksboven == nullptr || linksboven->kleur == kl) lb = false;
-	}*/
 	bool boven = checkrichting(i, j, 0, kl);
 	bool rechtsboven = checkrichting(i, j, 1, kl);
 	bool rechts = checkrichting(i, j, 2, kl);
