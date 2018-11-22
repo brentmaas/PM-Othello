@@ -1,4 +1,6 @@
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 #include "maasothello4.h"
 using namespace std;
 
@@ -7,13 +9,18 @@ BordVakje::BordVakje():
 	for(int i = 0;i < 8;i++) buren[i] = nullptr;
 }
 
-OthelloBord::OthelloBord():
-	hoogte(8), breedte(8){
+//Officieel begint zwart
+OthelloBord::OthelloBord(): hoogte(8), breedte(8), beurt(kleur2), speler1(kleur1), speler2(kleur2){
+	srand(time(0));
 	bouwbord();
 }
 
 OthelloBord::~OthelloBord() {
-	
+	for(int i = 0;i < hoogte;i++){
+		for(int j = 0;j < breedte;j++){
+			delete get(hoogte - i - 1, breedte - j - 1);
+		}
+	}
 }
 
 void OthelloBord::bouwbord(){
@@ -32,11 +39,18 @@ void OthelloBord::bouwbord(){
 }
 
 void OthelloBord::randomzet(char kl, int& i, int& j){
-	
+	i = rand() % hoogte;
+	j = rand() % breedte;
+	while(!magzet(i, j, kl)){
+		i = rand() % hoogte;
+		j = rand() % breedte;
+	}
+	doezet(i, j, kl);
 }
 
 void OthelloBord::menszet(char kl, bool& gedaan, int& i, int& j){
-	
+	gedaan = magzet(i, j, kl);
+	if(gedaan) doezet(i, j, kl);
 }
 
 void OthelloBord::drukaf(){
@@ -60,14 +74,12 @@ void OthelloBord::drukaf(){
 }
 
 bool OthelloBord::klaar(){
-	bool klaar = true;
 	for(int i = 0;i < hoogte;i++){
 		for(int j = 0;j < breedte;j++){
-			klaar = klaar || magzet(i, j, kleur1);
-			klaar = klaar || magzet(i, j, kleur2);
+			if(magzet(i, j, beurt)) return false;
 		}
 	}
-	return klaar;
+	return true;
 }
 
 int OthelloBord::gewonnen(char& kl){
@@ -78,12 +90,73 @@ int OthelloBord::gewonnen(char& kl){
 
 void OthelloBord::doezet(int i, int j, char kl){
 	get(i, j)->kleur = kl;
+	if(checkrichting(i, j, 0, kl)) vulrichting(i, j, 0, kl);
+	if(checkrichting(i, j, 1, kl)) vulrichting(i, j, 1, kl);
+	if(checkrichting(i, j, 2, kl)) vulrichting(i, j, 2, kl);
+	if(checkrichting(i, j, 3, kl)) vulrichting(i, j, 3, kl);
+	if(checkrichting(i, j, 4, kl)) vulrichting(i, j, 4, kl);
+	if(checkrichting(i, j, 5, kl)) vulrichting(i, j, 5, kl);
+	if(checkrichting(i, j, 6, kl)) vulrichting(i, j, 6, kl);
+	if(checkrichting(i, j, 7, kl)) vulrichting(i, j, 7, kl);
 }
 
 bool OthelloBord::magzet(int i, int j, char kl){
-	
-	
-	return false;
+	//Deze is fout btw
+	/*BordVakje* vakje = get(i, j);
+	if(vakje->kleur != kleur0) return false;
+	BordVakje* boven = vakje->buren[0];
+	BordVakje* rechtsboven = vakje->buren[1];
+	BordVakje* rechts = vakje->buren[2];
+	BordVakje* rechtsonder = vakje->buren[3];
+	BordVakje* onder = vakje->buren[4];
+	BordVakje* linksonder = vakje->buren[5];
+	BordVakje* links = vakje->buren[6];
+	BordVakje* linksboven = vakje->buren[7];
+	char anderekleur = kleur1;
+	if(kl == kleur1) anderekleur = kleur2;
+	bool b = boven->kleur == anderekleur;
+	bool rb = rechtsboven->kleur == anderekleur;
+	bool r = rechts->kleur == anderekleur;
+	bool ro = rechtsonder->kleur == anderekleur;
+	bool o = onder->kleur == anderekleur;
+	bool lo = linksonder->kleur == anderekleur;
+	bool l = links->kleur == anderekleur;
+	bool lb = linksboven->kleur == anderekleur;
+	boven = boven->buren[0];
+	rechtsboven = rechtsboven->buren[1];
+	rechts = rechts->buren[2];
+	rechtsonder = rechtsonder->buren[3];
+	onder = onder->buren[4];
+	linksonder = linksonder->buren[5];
+	links = links->buren[6];
+	linksboven = linksboven->buren[7];
+	while(b || rb || r || ro || o || lo || l || lb){
+		if(b && boven != nullptr && boven->kleur == kleur0) return true;
+		else if(boven == nullptr || boven->kleur == kl) b = false;
+		if(rb && rechtsboven != nullptr && rechtsboven->kleur == kleur0) return true;
+		else if(rechtsboven == nullptr || rechtsboven->kleur == kl) rb = false;
+		if(r && rechts != nullptr && rechts->kleur == kleur0) return true;
+		else if(rechts == nullptr || rechts->kleur == kl) r = false;
+		if(ro && rechtsonder != nullptr && rechtsonder->kleur == kleur0) return true;
+		else if(rechtsonder == nullptr || rechtsonder->kleur == kl) ro = false;
+		if(o && onder != nullptr && onder->kleur == kleur0) return true;
+		else if(onder == nullptr || onder->kleur == kl) o = false;
+		if(lo && linksonder != nullptr && linksonder->kleur == kleur0) return true;
+		else if(linksonder == nullptr || linksonder->kleur == kl) lo = false;
+		if(l && links != nullptr && links->kleur == kleur0) return true;
+		else if(links == nullptr || links->kleur == kl) l = false;
+		if(lb && linksboven != nullptr && linksboven->kleur == kleur0) return true;
+		else if(linksboven == nullptr || linksboven->kleur == kl) lb = false;
+	}*/
+	bool boven = checkrichting(i, j, 0, kl);
+	bool rechtsboven = checkrichting(i, j, 1, kl);
+	bool rechts = checkrichting(i, j, 2, kl);
+	bool rechtsonder = checkrichting(i, j, 3, kl);
+	bool onder = checkrichting(i, j, 4, kl);
+	bool linksonder = checkrichting(i, j, 5, kl);
+	bool links = checkrichting(i, j, 6, kl);
+	bool linksboven = checkrichting(i, j, 7, kl);
+	return boven || rechtsboven || rechts || rechtsonder || onder || linksonder || links || linksboven;
 }
 
 BordVakje* OthelloBord::get(int i, int j){
@@ -106,6 +179,29 @@ void OthelloBord::rits(BordVakje* boven, BordVakje* onder){
 		o->buren[1] = b->buren[2];
 		b = b->buren[2];
 		o = o->buren[2];
+	}
+}
+
+bool OthelloBord::checkrichting(int i, int j, int richting, char kl){
+	char anderekleur = kleur1;
+	if(kl == kleur1) anderekleur = kleur2;
+	BordVakje* vakje = get(i, j)->buren[richting];
+	if(vakje == nullptr || vakje->kleur != anderekleur) return false;
+	vakje = vakje->buren[richting];
+	while(vakje != nullptr){
+		if(vakje->kleur == kl) return true;
+		else if(vakje->kleur == kleur0) return false;
+		vakje = vakje->buren[richting];
+	}
+	return false;
+}
+
+//Aangenomen dat het kan
+void OthelloBord::vulrichting(int i, int j, int richting, char kl){
+	BordVakje* vakje = get(i, j)->buren[richting];
+	while(vakje->kleur != kl){
+		vakje->kleur = kl;
+		vakje = vakje->buren[richting];
 	}
 }
 

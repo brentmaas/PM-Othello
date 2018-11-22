@@ -3,9 +3,7 @@
  * Bestand: maas4.cc
  * Functie: 
  * Getest op: Windows 10 + MSys2 (MinGW64) met g++ 8.2.0
- *            Ubuntu 16.04 LTS met g++ 5.4.0
- * Getest met: g++ -o Assignment3 maas3.cc -std=c++17 -Wall -Wextra
- *             g++ -o Assignment3 maas3.cc -std=c++11 -Wall -Wextra
+ * Getest met: -std=c++17 -Wall -Wextra
  * Laatst bewerkt: 15/11/2018
  */
 

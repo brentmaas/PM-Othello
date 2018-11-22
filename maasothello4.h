@@ -26,7 +26,10 @@ class OthelloBord {
   private:
     BordVakje* ingang;
     int hoogte, breedte;
+    char beurt, speler1, speler2;
     void rits (BordVakje* boven, BordVakje* onder);
+    bool checkrichting(int i, int j, int richting, char kl);
+    void vulrichting(int i, int j, int richting, char kl);
     BordVakje* maakrij (int aantal);
 };
 
