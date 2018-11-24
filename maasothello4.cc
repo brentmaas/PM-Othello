@@ -10,7 +10,7 @@ BordVakje::BordVakje():
 }
 
 //Officieel begint zwart
-OthelloBord::OthelloBord(): hoogte(8), breedte(8), zetten(0), beurt(kleur2), speler1(kleur1), speler2(kleur2){
+OthelloBord::OthelloBord(int m, int n): hoogte(m), breedte(n), zetten(0), beurt(kleur1), speler1(kleur1), speler2(kleur2){
 	srand(time(0));
 	bouwbord();
 }
@@ -32,10 +32,10 @@ void OthelloBord::bouwbord(){
 		vorige = nieuw;
 	}
 	
-	get(breedte / 2 - 1, hoogte / 2 - 1)->kleur = kleur1;
-	get(breedte / 2 - 1, hoogte / 2)->kleur = kleur2;
-	get(breedte / 2, hoogte / 2 - 1)->kleur = kleur2;
-	get(breedte / 2, hoogte / 2)->kleur = kleur1;
+	get(hoogte / 2 - 1, breedte / 2 - 1)->kleur = kleur2;
+	get(hoogte / 2 - 1, breedte / 2)->kleur = kleur1;
+	get(hoogte / 2, breedte / 2 - 1)->kleur = kleur1;
+	get(hoogte / 2, breedte / 2)->kleur = kleur2;
 }
 
 void OthelloBord::randomzet(char kl, int& i, int& j){
@@ -83,10 +83,22 @@ bool OthelloBord::klaar(){
 	return true;
 }
 
-int OthelloBord::gewonnen(char& kl){
-	
-	
-	return 0;
+//Aangenomen dat het spel is afgelopen
+char OthelloBord::winnaar(){
+	if(zetten == hoogte * breedte){ //Alle zetten zijn gedaan; tel kleuren
+		int zwart = 0, wit = 0;
+		for(int i = 0;i < hoogte;i++) for(int j = 0;j < breedte;j++){
+			//Er kan aangenomen worden dat er geen lege vakjes zijn
+			if(get(i, j)->kleur == kleur1) zwart++;
+			else wit++;
+		}
+		if(zwart > wit) return kleur1;
+		else if(wit > zwart) return kleur2;
+		return kleur0;
+	}else{ //Een beurt kon dus niet gezet worden, dus de huidige beurt verliest
+		if(beurt == kleur1) return kleur2;
+		return kleur1;
+	}
 }
 
 void OthelloBord::doezet(int i, int j, char kl){
@@ -170,4 +182,9 @@ BordVakje* OthelloBord::maakrij(int aantal){
 		vorige = nieuw;
 	}
 	return start;
+}
+
+void OthelloBord::wisselbeurt(){
+	if(beurt == kleur1) beurt = kleur2;
+	else beurt = kleur1;
 }

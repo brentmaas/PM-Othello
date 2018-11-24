@@ -24,42 +24,45 @@ void infoBlokje(){
 	"////////////////////////////////////////////////\n" << std::endl;
 }
 
+//Vraag aan of een speler een mens of een computer moet zijn en return true resp. false
+bool vraagSpeler(int speler, const char* kleur){
+	while(true){
+		std::cout << "Speler " << speler << " (" << kleur << "): [M]ens of [C]omputer: ";
+		char optie = std::cin.get();
+		while(optie == '\n') optie = std::cin.get();
+		if(optie == 'm' || optie == 'M') return true;
+		if(optie == 'c' || optie == 'C') return false;
+		std::cout << "Ongeldige keuze: '" << optie << "'!" << std::endl;
+	}
+}
+
+//Vraag een dimensie op en return deze
+int vraagDimensie(const char* dimensie){
+	int i = 0;
+	while(true){
+		std::cout << dimensie << " (meer dan twee, veelvoud van twee): ";
+		std::cin >> i;
+		if(std::cin.fail()){ //Wanneer er iets anders dan een int wordt gegeven.
+			std::cin.clear();
+			std::cin.ignore();
+			std::cout << "Ongeldige invoer!" << std::endl;
+			continue;
+		}
+		if(i % 2 == 0 && i > 2) return i;
+		std::cout << "Ongeldige invoer!" << std::endl;
+	}
+}
+
 int main(){
 	infoBlokje();
 	
-	bool speler1mens, speler2mens;
+	//const char* apart ipv gewoon de string doorgeven ivm waarschuwing over ISO C++
+	const char* zwart = "zwart", * wit = "wit";
+	bool speler1mens = vraagSpeler(1, zwart), speler2mens = vraagSpeler(2, wit);
+	const char* hoogte = "Hoogte", * breedte = "Breedte";
+	int m = vraagDimensie(hoogte), n = vraagDimensie(breedte);
 	
-	while(true){
-		std::cout << "Speler 1 (wit): [M]ens of [C]omputer: ";
-		char optie = std::cin.get();
-		while(optie == '\n') optie = std::cin.get();
-		if(optie == 'm' || optie == 'M'){
-			speler1mens = true;
-			break;
-		}
-		if(optie == 'c' || optie == 'C'){
-			speler1mens = false;
-			break;
-		}
-		std::cout << "Ongeldige keuze: '" << optie << "'!" << std::endl;
-	}
-	
-	while(true){
-		std::cout << "Speler 2 (zwart): [M]ens of [C]omputer: ";
-		char optie = std::cin.get();
-		while(optie == '\n') optie = std::cin.get();
-		if(optie == 'm' || optie == 'M'){
-			speler2mens = true;
-			break;
-		}
-		if(optie == 'c' || optie == 'C'){
-			speler2mens = false;
-			break;
-		}
-		std::cout << "Ongeldige keuze: '" << optie << "'!" << std::endl;
-	}
-	
-	OthelloBord bord;
+	OthelloBord bord(m, n);
 	bord.drukaf();
 	
 	return 0;
