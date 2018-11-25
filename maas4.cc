@@ -4,10 +4,11 @@
  * Functie: 
  * Getest op: Windows 10 + MSys2 (MinGW64) met g++ 8.2.0
  * Getest met: -std=c++17 -Wall -Wextra
- * Laatst bewerkt: 15/11/2018
+ * Laatst bewerkt: 25/11/2018
  */
 
 #include <iostream>
+#include "maasstapel4.h"
 #include "maasothello4.h"
 
 //Voert het infoblok uit naar de standaarduitvoer
@@ -40,17 +41,58 @@ bool vraagSpeler(int speler, const char* kleur){
 int vraagDimensie(const char* dimensie){
 	int i = 0;
 	while(true){
-		std::cout << dimensie << " (meer dan twee, veelvoud van twee): ";
+		std::cout << dimensie << " (meer dan nul, veelvoud van twee): ";
 		std::cin >> i;
 		if(std::cin.fail()){ //Wanneer er iets anders dan een int wordt gegeven.
+			//clear, ignore nodig om cin goed te resetten
 			std::cin.clear();
 			std::cin.ignore();
 			std::cout << "Ongeldige invoer!" << std::endl;
 			continue;
 		}
-		if(i % 2 == 0 && i > 2) return i;
+		if(i % 2 == 0 && i > 0) return i;
 		std::cout << "Ongeldige invoer!" << std::endl;
 	}
+}
+
+void printbeurt(OthelloBord& bord){
+	int laatsteI = bord.getLaatsteBeurtI(), laatsteJ = bord.getLaatsteBeurtJ();
+	if(laatsteI != -1 && laatsteJ != -1){
+		if(bord.getBeurt() == kleur1) std::cout << "Wit";
+		else std::cout << "Zwart";
+		std::cout << " zette ";
+		if(bord.getBreedte() <= 26){
+			std::cout << (char) ('A' + laatsteJ) << (laatsteI + 1) << std::endl;
+		}else std::cout << (laatsteJ + 1) << "," << (laatsteI + 1) << std::endl;
+	}
+}
+
+void speelspel(bool speler1mens, bool speler2mens, int m, int n){
+	OthelloBord bord(m, n);
+	//Stapel stapel(m, n);
+	//stapel.slaop(bord);
+	
+	while(!bord.klaar()){
+		printbeurt(bord);
+		
+		bord.drukaf();
+		
+		if((speler1mens && bord.getBeurt() == kleur1) || (speler2mens && bord.getBeurt() == kleur2)){
+			
+		}else{
+			bord.randomzet(bord.getBeurt());
+		}
+	}
+	
+	printbeurt(bord);
+	
+	bord.drukaf();
+	
+	char winnaar = bord.winnaar();
+	
+	if(winnaar == kleur1) std::cout << "Zwart wint" << std::endl;
+	else if(winnaar == kleur2) std::cout << "Wit wint" << std::endl;
+	else std::cout << "Gelijk spel" << std::endl;
 }
 
 int main(){
@@ -62,8 +104,7 @@ int main(){
 	const char* hoogte = "Hoogte", * breedte = "Breedte";
 	int m = vraagDimensie(hoogte), n = vraagDimensie(breedte);
 	
-	OthelloBord bord(m, n);
-	bord.drukaf();
+	speelspel(speler1mens, speler2mens, m, n);
 	
 	return 0;
 }

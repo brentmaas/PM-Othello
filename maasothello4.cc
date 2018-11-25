@@ -1,3 +1,12 @@
+/**
+ * Auteur: Brent Maas (s1826247)
+ * Bestand: maasothello4.cc
+ * Functie: 
+ * Getest op: Windows 10 + MSys2 (MinGW64) met g++ 8.2.0
+ * Getest met: -std=c++17 -Wall -Wextra
+ * Laatst bewerkt: 25/11/2018
+ */
+
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
@@ -9,8 +18,12 @@ BordVakje::BordVakje():
 	for(int i = 0;i < 8;i++) buren[i] = nullptr;
 }
 
+OthelloBord::OthelloBord(): ingang(nullptr), hoogte(8), breedte(8), zetten(0), beurt(kleur1), laatsteBeurtI(-1), laatsteBeurtJ(-1){
+	
+}
+
 //Officieel begint zwart
-OthelloBord::OthelloBord(int m, int n): hoogte(m), breedte(n), zetten(0), beurt(kleur1), speler1(kleur1), speler2(kleur2){
+OthelloBord::OthelloBord(int m, int n): hoogte(m), breedte(n), zetten(0), beurt(kleur1), laatsteBeurtI(-1), laatsteBeurtJ(-1){
 	srand(time(0));
 	bouwbord();
 }
@@ -21,6 +34,19 @@ OthelloBord::~OthelloBord() {
 			delete get(hoogte - i - 1, breedte - j - 1);
 		}
 	}
+}
+
+OthelloBord OthelloBord::kopieer(){
+	OthelloBord kopie(hoogte, breedte);
+	for(int i = 0;i < hoogte;i++) for(int j = 0;j < breedte;j++){
+		kopie.get(i, j)->kleur = get(i, j)->kleur;
+	}
+	kopie.zetten = zetten;
+	kopie.beurt = beurt;
+	kopie.laatsteBeurtI = laatsteBeurtI;
+	kopie.laatsteBeurtJ = laatsteBeurtJ;
+	
+	return kopie;
 }
 
 void OthelloBord::bouwbord(){
@@ -38,9 +64,9 @@ void OthelloBord::bouwbord(){
 	get(hoogte / 2, breedte / 2)->kleur = kleur2;
 }
 
-void OthelloBord::randomzet(char kl, int& i, int& j){
-	i = rand() % hoogte;
-	j = rand() % breedte;
+void OthelloBord::randomzet(char kl){
+	int i = rand() % hoogte;
+	int j = rand() % breedte;
 	while(!magzet(i, j, kl)){
 		i = rand() % hoogte;
 		j = rand() % breedte;
@@ -48,7 +74,7 @@ void OthelloBord::randomzet(char kl, int& i, int& j){
 	doezet(i, j, kl);
 }
 
-void OthelloBord::menszet(char kl, bool& gedaan, int& i, int& j){
+void OthelloBord::menszet(char kl, bool& gedaan, int i, int j){
 	gedaan = magzet(i, j, kl);
 	if(gedaan) doezet(i, j, kl);
 }
@@ -94,7 +120,7 @@ char OthelloBord::winnaar(){
 		}
 		if(zwart > wit) return kleur1;
 		else if(wit > zwart) return kleur2;
-		return kleur0;
+		return kleur0; //Gelijk spel
 	}else{ //Een beurt kon dus niet gezet worden, dus de huidige beurt verliest
 		if(beurt == kleur1) return kleur2;
 		return kleur1;
@@ -112,9 +138,13 @@ void OthelloBord::doezet(int i, int j, char kl){
 	if(checkrichting(i, j, 6, kl)) vulrichting(i, j, 6, kl);
 	if(checkrichting(i, j, 7, kl)) vulrichting(i, j, 7, kl);
 	zetten++;
+	laatsteBeurtI = i;
+	laatsteBeurtJ = j;
+	wisselbeurt();
 }
 
 bool OthelloBord::magzet(int i, int j, char kl){
+	if(get(i, j)->kleur != kleur0) return false;
 	bool boven = checkrichting(i, j, 0, kl);
 	bool rechtsboven = checkrichting(i, j, 1, kl);
 	bool rechts = checkrichting(i, j, 2, kl);
@@ -132,6 +162,26 @@ BordVakje* OthelloBord::get(int i, int j){
 	for(int k = 0;k < i;k++) vakje = vakje->buren[4];
 	for(int k = 0;k < j;k++) vakje = vakje->buren[2];
 	return vakje;
+}
+
+int OthelloBord::getHoogte(){
+	return hoogte;
+}
+
+int OthelloBord::getBreedte(){
+	return breedte;
+}
+
+char OthelloBord::getBeurt(){
+	return beurt;
+}
+
+int OthelloBord::getLaatsteBeurtI(){
+	return laatsteBeurtI;
+}
+
+int OthelloBord::getLaatsteBeurtJ(){
+	return laatsteBeurtJ;
 }
 
 void OthelloBord::rits(BordVakje* boven, BordVakje* onder){
