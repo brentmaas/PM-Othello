@@ -9,16 +9,25 @@
 
 #include "maasstapel4.h"
 
-Stapel::Stapel(int m, int n):
-	lengte(0){
+Stapel::Stapel(int m, int n): lengte(0), hoogte(m), breedte(n){
 	stapel = new OthelloBord[m * n + 1];
 }
 
 Stapel::~Stapel(){
-	for(int i = 0;i < lengte;i++){
-		stapel[i].~OthelloBord();
-	}
-	delete stapel;
+	delete [] stapel;
+}
+
+Stapel::Stapel(const Stapel& s): lengte(s.lengte), hoogte(s.hoogte), breedte(s.breedte){
+	stapel = new OthelloBord[hoogte * breedte + 1];
+	for(int i = 0;i < s.lengte;i++) slaop(s.stapel[i]);
+}
+
+Stapel& Stapel::operator=(const Stapel& s){
+	lengte = s.lengte;
+	hoogte = s.hoogte;
+	breedte = s.breedte;
+	stapel = s.stapel;
+	return *this;
 }
 
 OthelloBord& Stapel::gaTerug(int beurten){

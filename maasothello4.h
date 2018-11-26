@@ -24,17 +24,19 @@ class OthelloBord {
 	OthelloBord();
     OthelloBord(int m, int n);
     ~OthelloBord();
+    OthelloBord(const OthelloBord& bord);
+    OthelloBord& operator=(const OthelloBord& bord);
     OthelloBord kopieer();
     void bouwbord();
     void randomzet(char kl);
     void menszet(char kl, bool& gedaan, int i, int j);
-    void drukaf();
+    void print();
     bool klaar();
     char winnaar();
     void doezet(int i, int j, char kl);
     bool magzet(int i, int j, char kl);
     BordVakje* get(int i, int j);
-    int getHoogte();
+    BordVakje* get(int i, int j) const; //Deze wilde operator=
     int getBreedte();
     char getBeurt();
     int getLaatsteBeurtI();

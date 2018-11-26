@@ -16,11 +16,13 @@ class Stapel {
 public:
 	Stapel(int m, int n);
 	~Stapel();
+	Stapel(const Stapel& s); //Copy constructor
+	Stapel& operator=(const Stapel& s); //Assignment operator
 	OthelloBord& gaTerug(int beurten);
 	void slaop(OthelloBord& bord);
 private:
 	OthelloBord* stapel;
-	int lengte;
+	int lengte, hoogte, breedte;
 };
 
 #endif

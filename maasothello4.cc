@@ -19,7 +19,8 @@ BordVakje::BordVakje():
 }
 
 OthelloBord::OthelloBord(): ingang(nullptr), hoogte(8), breedte(8), zetten(0), beurt(kleur1), laatsteBeurtI(-1), laatsteBeurtJ(-1){
-	
+	srand(time(0));
+	bouwbord();
 }
 
 //Officieel begint zwart
@@ -34,6 +35,29 @@ OthelloBord::~OthelloBord() {
 			delete get(hoogte - i - 1, breedte - j - 1);
 		}
 	}
+}
+
+OthelloBord::OthelloBord(const OthelloBord& bord): hoogte(bord.hoogte), breedte(bord.breedte),
+	zetten(bord.zetten), beurt(bord.beurt), laatsteBeurtI(bord.laatsteBeurtI), laatsteBeurtJ(bord.laatsteBeurtJ){
+	bouwbord();
+	for(int i = 0;i < hoogte;i++) for(int j = 0;j < breedte;j++){
+		get(i, j)->kleur = bord.get(i, j)->kleur;
+	}
+}
+
+OthelloBord& OthelloBord::operator=(const OthelloBord& bord){
+	for(int i = 0;i < hoogte;i++) for(int j = 0;j < breedte;j++){
+		if(get(i, j) != nullptr && bord.get(i, j) != nullptr){
+			get(i, j)->kleur = bord.get(i, j)->kleur;
+		}
+	}
+	hoogte = bord.hoogte;
+	breedte = bord.breedte;
+	zetten = bord.zetten;
+	beurt = bord.beurt;
+	laatsteBeurtI = bord.laatsteBeurtI;
+	laatsteBeurtJ = bord.laatsteBeurtJ;
+	return *this;
 }
 
 OthelloBord OthelloBord::kopieer(){
@@ -79,7 +103,7 @@ void OthelloBord::menszet(char kl, bool& gedaan, int i, int j){
 	if(gedaan) doezet(i, j, kl);
 }
 
-void OthelloBord::drukaf(){
+void OthelloBord::print(){
 	std::cout << "-";
 	for(int i = 0;i < breedte;i++) std::cout << "--";
 	std::cout << "--" << std::endl;
@@ -111,7 +135,8 @@ bool OthelloBord::klaar(){
 
 //Aangenomen dat het spel is afgelopen
 char OthelloBord::winnaar(){
-	if(zetten == hoogte * breedte){ //Alle zetten zijn gedaan; tel kleuren
+	//hoogte * breedte - 4 zetten mogelijk
+	if(zetten == hoogte * breedte - 4){ //Alle zetten zijn gedaan; tel kleuren
 		int zwart = 0, wit = 0;
 		for(int i = 0;i < hoogte;i++) for(int j = 0;j < breedte;j++){
 			//Er kan aangenomen worden dat er geen lege vakjes zijn
@@ -157,15 +182,19 @@ bool OthelloBord::magzet(int i, int j, char kl){
 }
 
 BordVakje* OthelloBord::get(int i, int j){
-	if(i < 0 || i > hoogte || j < 0 || j > breedte) return nullptr;
+	if(i < 0 || i >= hoogte || j < 0 || j >= breedte) return nullptr;
 	BordVakje* vakje = ingang;
 	for(int k = 0;k < i;k++) vakje = vakje->buren[4];
 	for(int k = 0;k < j;k++) vakje = vakje->buren[2];
 	return vakje;
 }
 
-int OthelloBord::getHoogte(){
-	return hoogte;
+BordVakje* OthelloBord::get(int i, int j) const{
+	if(i < 0 || i >= hoogte || j < 0 || j >= breedte) return nullptr;
+	BordVakje* vakje = ingang;
+	for(int k = 0;k < i;k++) vakje = vakje->buren[4];
+	for(int k = 0;k < j;k++) vakje = vakje->buren[2];
+	return vakje;
 }
 
 int OthelloBord::getBreedte(){

@@ -69,24 +69,26 @@ void printbeurt(OthelloBord& bord){
 
 void speelspel(bool speler1mens, bool speler2mens, int m, int n){
 	OthelloBord bord(m, n);
-	//Stapel stapel(m, n);
-	//stapel.slaop(bord);
+	Stapel stapel(m, n);
+	stapel.slaop(bord);
 	
 	while(!bord.klaar()){
 		printbeurt(bord);
 		
-		bord.drukaf();
+		bord.print();
 		
 		if((speler1mens && bord.getBeurt() == kleur1) || (speler2mens && bord.getBeurt() == kleur2)){
 			
 		}else{
 			bord.randomzet(bord.getBeurt());
 		}
+		
+		stapel.slaop(bord);
 	}
 	
 	printbeurt(bord);
 	
-	bord.drukaf();
+	bord.print();
 	
 	char winnaar = bord.winnaar();
 	
