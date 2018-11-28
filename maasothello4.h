@@ -38,6 +38,7 @@ class OthelloBord {
     BordVakje* get(int i, int j);
     BordVakje* get(int i, int j) const; //Deze wilde operator=
     int getBreedte();
+    int getHoogte();
     char getBeurt();
     int getLaatsteBeurtI();
     int getLaatsteBeurtJ();

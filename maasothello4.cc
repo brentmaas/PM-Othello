@@ -201,6 +201,10 @@ int OthelloBord::getBreedte(){
 	return breedte;
 }
 
+int OthelloBord::getHoogte(){
+	return hoogte;
+}
+
 char OthelloBord::getBeurt(){
 	return beurt;
 }

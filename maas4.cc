@@ -78,7 +78,22 @@ void speelspel(bool speler1mens, bool speler2mens, int m, int n){
 		bord.print();
 		
 		if((speler1mens && bord.getBeurt() == kleur1) || (speler2mens && bord.getBeurt() == kleur2)){
-			
+			bool gezet = false;
+			while(!gezet){
+				std::cout << (bord.getBeurt() == kleur1 ? "Zwart" : "Wit") << " is aan de beurt" << std::endl;
+				std::cout << "Hoogte ([1, " << bord.getBreedte() << "]";
+				if(bord.getBreedte() <= 26){
+					std::cout << " of [A, " << char('A' + bord.getBreedte() - 1) << "]";
+				}
+				std::cout << ": ";
+				char in = std::cin.get();
+				int i;
+				if(in >= 'A' || in <= 'Z'){
+					i = in - 'A';
+				}else if(in >= '1' || in <= '9'){
+					
+				}
+			}
 		}else{
 			bord.randomzet(bord.getBeurt());
 		}
