@@ -61,9 +61,8 @@ void printbeurt(OthelloBord& bord){
 		if(bord.getBeurt() == kleur1) std::cout << "Wit";
 		else std::cout << "Zwart";
 		std::cout << " zette ";
-		if(bord.getBreedte() <= 26){
-			std::cout << (char) ('A' + laatsteJ) << (laatsteI + 1) << std::endl;
-		}else std::cout << (laatsteJ + 1) << "," << (laatsteI + 1) << std::endl;
+		if(bord.getBreedte() <= 26) std::cout << (char) ('A' + laatsteJ) << (laatsteI + 1) << std::endl;
+		else std::cout << (laatsteJ + 1) << "," << (laatsteI + 1) << std::endl;
 	}
 }
 
@@ -81,18 +80,45 @@ void speelspel(bool speler1mens, bool speler2mens, int m, int n){
 			bool gezet = false;
 			while(!gezet){
 				std::cout << (bord.getBeurt() == kleur1 ? "Zwart" : "Wit") << " is aan de beurt" << std::endl;
-				std::cout << "Hoogte ([1, " << bord.getBreedte() << "]";
-				if(bord.getBreedte() <= 26){
-					std::cout << " of [A, " << char('A' + bord.getBreedte() - 1) << "]";
+				
+				int j = -1;
+				while(true){
+					std::cout << "Breedte ([1, " << bord.getBreedte() << "]";
+					if(bord.getBreedte() <= 26){
+						std::cout << " of [A, " << char('A' + bord.getBreedte() - 1) << "]";
+					}
+					std::cout << "): ";
+					std::string in;
+					std::cin >> in;
+					if(in.length() == 1 && bord.getBreedte() <= 26 && in[0] >= 'A' && in[0] <= 'A' + bord.getBreedte()){
+						j = in[0] - 'A';
+					}else if(in.length() == 1 && bord.getBreedte() <= 26 && in[0] >= 'a' && in[0] <= 'a' + bord.getBreedte()){
+						j = in[0] - 'a';
+					}else if(in[0] >= '0' && in[0] <= '9'){
+						j = std::atoi(in.c_str()) - 1;
+						if(j >= bord.getBreedte()) j = -1;
+					}
+					if(j != -1) break;
+					std::cout << "Ongeldige invoer!" << std::endl;
 				}
-				std::cout << ": ";
-				char in = std::cin.get();
-				int i;
-				if(in >= 'A' || in <= 'Z'){
-					i = in - 'A';
-				}else if(in >= '1' || in <= '9'){
-					
+				
+				int i = -1;
+				while(true){
+					std::cout << "Hoogte ([1, " << bord.getHoogte() << "]): ";
+					std::string in;
+					std::cin >> in;
+					if(in[0] >= '0' && in[0] <= '9'){
+						i = std::atoi(in.c_str()) - 1;
+						if(i >= bord.getHoogte()) i = -1;
+					}
+					if(i != -1) break;
+					std::cout << "Ongeldige invoer!" << std::endl;
 				}
+				
+				std::cout << i << " " << j << std::endl;
+				
+				bord.menszet(bord.getBeurt(), gezet, i, j);
+				if(!gezet) std::cout << "Ongeldige zet" << std::endl;
 			}
 		}else{
 			bord.randomzet(bord.getBeurt());
