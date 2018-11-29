@@ -197,16 +197,28 @@ bool OthelloBord::magzet(int i, int j, char kl){
 BordVakje* OthelloBord::get(int i, int j){
 	if(i < 0 || i >= hoogte || j < 0 || j >= breedte) return nullptr;
 	BordVakje* vakje = ingang;
-	for(int k = 0;k < i;k++) vakje = vakje->buren[4];
-	for(int k = 0;k < j;k++) vakje = vakje->buren[2];
+	for(int k = 0;k < i;k++){
+		if(vakje == nullptr) return nullptr;
+		vakje = vakje->buren[4];
+	}
+	for(int k = 0;k < j;k++){
+		if(vakje == nullptr) return nullptr;
+		vakje = vakje->buren[2];
+	}
 	return vakje;
 }
 
 BordVakje* OthelloBord::get(int i, int j) const{
 	if(i < 0 || i >= hoogte || j < 0 || j >= breedte) return nullptr;
 	BordVakje* vakje = ingang;
-	for(int k = 0;k < i;k++) vakje = vakje->buren[4];
-	for(int k = 0;k < j;k++) vakje = vakje->buren[2];
+	for(int k = 0;k < i;k++){
+		if(vakje == nullptr) return nullptr;
+		vakje = vakje->buren[4];
+	}
+	for(int k = 0;k < j;k++){
+		if(vakje == nullptr) return nullptr;
+		vakje = vakje->buren[2];
+	}
 	return vakje;
 }
 
