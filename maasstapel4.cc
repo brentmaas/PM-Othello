@@ -31,7 +31,7 @@ Stapel& Stapel::operator=(const Stapel& s){
 }
 
 OthelloBord& Stapel::gaTerug(int beurten){
-	if(lengte - beurten - 1 < 0){
+	if(lengte - beurten < 1){
 		lengte = 1;
 		return stapel[0];
 	}

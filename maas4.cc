@@ -186,9 +186,12 @@ void speelspel(bool speler1mens, bool speler2mens, int m, int n){
 	else std::cout << "Gelijk spel" << std::endl;
 	if(winnaar == kleur1 || winnaar == kleur2){ //Geen gelijk spel
 		//verschil == 0: Iemand kon niet zetten
-		if(verschil == 0) std::cout << " (" << (winnaar == kleur1 ? "Wit" : "Zwart") << " kon niet meer zetten)";
+		if(verschil == 0) std::cout << " ("
+				<< (winnaar == kleur1 ? "Wit" : "Zwart")
+				<< " kon niet meer zetten)" << std::endl;
 		//Iemand won door een verschil in stenen
-		else std::cout << " (" << verschil << " stenen meer dan " << (winnaar == kleur1 ? "Wit" : "Zwart") << ")" << std::endl;
+		else std::cout << " (" << verschil << " stenen meer dan "
+				<< (winnaar == kleur1 ? "Wit" : "Zwart") << ")" << std::endl;
 	}
 }
 

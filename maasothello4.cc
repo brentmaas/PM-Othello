@@ -88,13 +88,20 @@ void OthelloBord::bouwbord(){
 }
 
 void OthelloBord::computerzet(char kl){
-	int i = rand() % hoogte;
-	int j = rand() % breedte;
-	while(!magzet(i, j, kl)){
-		i = rand() % hoogte;
-		j = rand() % breedte;
+	//Als een hoek gezet kan worden, doe dat
+	if(magzet(0, 0, kl)) doezet(0, 0, kl);
+	else if(magzet(0, breedte - 1, kl)) doezet(0, breedte - 1, kl);
+	else if(magzet(hoogte - 1, 0, kl)) doezet(hoogte - 1, 0, kl);
+	else if(magzet(hoogte - 1, breedte - 1, kl)) doezet(hoogte - 1, breedte - 1, kl);
+	else{ //Anders neem een willekeurige mogelijke zet
+		int i = rand() % hoogte;
+		int j = rand() % breedte;
+		while(!magzet(i, j, kl)){
+			i = rand() % hoogte;
+			j = rand() % breedte;
+		}
+		doezet(i, j, kl);
 	}
-	doezet(i, j, kl);
 }
 
 void OthelloBord::menszet(char kl, bool& gedaan, int i, int j){
