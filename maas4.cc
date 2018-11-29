@@ -4,7 +4,7 @@
  * Functie: 
  * Getest op: Windows 10 + MSys2 (MinGW64) met g++ 8.2.0
  * Getest met: -std=c++17 -Wall -Wextra
- * Laatst bewerkt: 25/11/2018
+ * Laatst bewerkt: 29/11/2018
  */
 
 #include <iostream>
@@ -32,7 +32,7 @@ char vraagOptie(){
 }
 
 //Vraag aan of een speler een mens of een computer moet zijn en return true resp. false
-bool vraagSpeler(int speler, const char* kleur){
+bool vraagSpeler(int speler, std::string kleur){
 	while(true){
 		std::cout << "Speler " << speler << " (" << kleur << "): [M]ens of [C]omputer: ";
 		char optie = vraagOptie();
@@ -43,7 +43,7 @@ bool vraagSpeler(int speler, const char* kleur){
 }
 
 //Vraag een dimensie op en return deze
-int vraagDimensie(const char* dimensie){
+int vraagDimensie(std::string dimensie){
 	int i = 0;
 	while(true){
 		std::cout << dimensie << " (meer dan nul, veelvoud van twee): ";
@@ -95,6 +95,28 @@ int vraagPositie(OthelloBord& bord, bool isBreedte){
 	return uit;
 }
 
+void menu(OthelloBord& bord, Stapel& stapel){
+	std::cout << (bord.getBeurt() == kleur1 ? "Zwart" : "Wit") << " is aan de beurt" << std::endl;
+	char optie;
+	while(true){
+		std::cout << "Doe een [Z]et of bereken het aantal [V]ervolgpartijen" << std::endl;
+		optie = vraagOptie();
+		if(optie == 'Z' || optie == 'z'){
+			bool gezet = false;
+			while(!gezet){
+				int j = vraagPositie(bord, true), i = vraagPositie(bord, false);
+				
+				bord.menszet(bord.getBeurt(), gezet, i, j);
+				if(!gezet) std::cout << "Ongeldige zet!" << std::endl;
+			}
+			break;
+		}else if(optie == 'V' || optie == 'v'){
+			int v = stapel.vervolg();
+			std::cout << "Er zijn " << v << " vervolgpartijen" << std::endl;
+		}
+	}
+}
+
 void speelspel(bool speler1mens, bool speler2mens, int m, int n){
 	OthelloBord bord(m, n);
 	Stapel stapel(m, n);
@@ -106,25 +128,7 @@ void speelspel(bool speler1mens, bool speler2mens, int m, int n){
 		bord.print();
 		
 		if((speler1mens && bord.getBeurt() == kleur1) || (speler2mens && bord.getBeurt() == kleur2)){
-			std::cout << (bord.getBeurt() == kleur1 ? "Zwart" : "Wit") << " is aan de beurt" << std::endl;
-			char optie;
-			while(true){
-				std::cout << "Doe een [Z]et of bereken het aantal [V]ervolgpartijen" << std::endl;
-				optie = vraagOptie();
-				if(optie == 'Z' || optie == 'z'){
-					bool gezet = false;
-					while(!gezet){
-						int j = vraagPositie(bord, true), i = vraagPositie(bord, false);
-						
-						bord.menszet(bord.getBeurt(), gezet, i, j);
-						if(!gezet) std::cout << "Ongeldige zet!" << std::endl;
-					}
-					break;
-				}else if(optie == 'V' || optie == 'v'){
-					int v = stapel.vervolg();
-					std::cout << "Er zijn " << v << " vervolgpartijen" << std::endl;
-				}
-			}
+			menu(bord, stapel);
 		}else{
 			bord.computerzet(bord.getBeurt());
 		}
@@ -146,11 +150,8 @@ void speelspel(bool speler1mens, bool speler2mens, int m, int n){
 int main(){
 	infoBlokje();
 	
-	//const char* apart ipv gewoon de string doorgeven ivm waarschuwing over ISO C++
-	const char* zwart = "zwart", * wit = "wit";
-	bool speler1mens = vraagSpeler(1, zwart), speler2mens = vraagSpeler(2, wit);
-	const char* hoogte = "Hoogte", * breedte = "Breedte";
-	int m = vraagDimensie(hoogte), n = vraagDimensie(breedte);
+	bool speler1mens = vraagSpeler(1, "zwart"), speler2mens = vraagSpeler(2, "wit");
+	int m = vraagDimensie("Hoogte"), n = vraagDimensie("Breedte");
 	
 	speelspel(speler1mens, speler2mens, m, n);
 	

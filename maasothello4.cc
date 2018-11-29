@@ -4,11 +4,10 @@
  * Functie: 
  * Getest op: Windows 10 + MSys2 (MinGW64) met g++ 8.2.0
  * Getest met: -std=c++17 -Wall -Wextra
- * Laatst bewerkt: 25/11/2018
+ * Laatst bewerkt: 29/11/2018
  */
 
 #include <iostream>
-#include <cstdlib>
 #include <ctime>
 #include "maasothello4.h"
 using namespace std;
