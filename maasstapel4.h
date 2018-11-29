@@ -22,7 +22,7 @@ public:
 	void slaop(OthelloBord& bord);
 	int vervolg();
 private:
-	OthelloBord** stapel;
+	OthelloBord* stapel;
 	int lengte, hoogte, breedte;
 };
 

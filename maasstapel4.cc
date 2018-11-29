@@ -10,22 +10,16 @@
 #include "maasstapel4.h"
 
 Stapel::Stapel(int m, int n): lengte(0), hoogte(m), breedte(n){
-	stapel = new OthelloBord*[m * n + 1];
-	for(int i = 0;i < m * n + 1;i++){
-		stapel[i] = new OthelloBord(m, n);
-	}
+	stapel = new OthelloBord[m * n + 1];
 }
 
 Stapel::~Stapel(){
-	/*for(int i = 0;i < lengte * hoogte + 1;i++){
-		delete stapel[i];
-	}*/
 	delete [] stapel;
 }
 
 Stapel::Stapel(const Stapel& s): lengte(s.lengte), hoogte(s.hoogte), breedte(s.breedte){
-	stapel = new OthelloBord*[hoogte * breedte + 1];
-	for(int i = 0;i < s.lengte;i++) slaop(*s.stapel[i]);
+	stapel = new OthelloBord[hoogte * breedte + 1];
+	for(int i = 0;i < s.lengte;i++) slaop(s.stapel[i]);
 }
 
 Stapel& Stapel::operator=(const Stapel& s){
@@ -39,20 +33,20 @@ Stapel& Stapel::operator=(const Stapel& s){
 OthelloBord& Stapel::gaTerug(int beurten){
 	if(lengte - beurten < 1){
 		lengte = 1;
-		return *stapel[0];
+		return stapel[0];
 	}
 	lengte -= beurten;
-	return *stapel[lengte - 1];
+	return stapel[lengte - 1];
 }
 
 void Stapel::slaop(OthelloBord& bord){
-	*stapel[lengte] = bord.kopieer();
+	stapel[lengte] = bord.kopieer();
 	lengte++;
 }
 
 int Stapel::vervolg(){
 	int v = 0;
-	OthelloBord bord = (*stapel[lengte - 1]).kopieer();
+	OthelloBord bord = stapel[lengte - 1].kopieer();
 	if(bord.klaar()) return 1;
 	for(int i = 0;i < hoogte;i++){
 		for(int j = 0;j < breedte;j++){
