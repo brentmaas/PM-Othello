@@ -32,7 +32,7 @@ class OthelloBord {
     void menszet(char kl, bool& gedaan, int i, int j);
     void print();
     bool klaar();
-    char winnaar();
+    char winnaar(int& verschil);
     void doezet(int i, int j, char kl);
     bool magzet(int i, int j, char kl);
     BordVakje* get(int i, int j);

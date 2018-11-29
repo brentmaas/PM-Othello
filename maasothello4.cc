@@ -133,7 +133,7 @@ bool OthelloBord::klaar(){
 }
 
 //Aangenomen dat het spel is afgelopen
-char OthelloBord::winnaar(){
+char OthelloBord::winnaar(int& verschil){
 	//hoogte * breedte - 4 zetten mogelijk
 	if(zetten == hoogte * breedte - 4){ //Alle zetten zijn gedaan; tel kleuren
 		int zwart = 0, wit = 0;
@@ -142,10 +142,17 @@ char OthelloBord::winnaar(){
 			if(get(i, j)->kleur == kleur1) zwart++;
 			else wit++;
 		}
-		if(zwart > wit) return kleur1;
-		else if(wit > zwart) return kleur2;
+		if(zwart > wit){
+			verschil = zwart - wit;
+			return kleur1;
+		}
+		else if(wit > zwart){
+			verschil = wit - zwart;
+			return kleur2;
+		}
 		return kleur0; //Gelijk spel
 	}else{ //Een beurt kon dus niet gezet worden, dus de huidige beurt verliest
+		verschil = 0;
 		if(beurt == kleur1) return kleur2;
 		return kleur1;
 	}
