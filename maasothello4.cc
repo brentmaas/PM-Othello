@@ -88,7 +88,7 @@ void OthelloBord::bouwbord(){
 	get(hoogte / 2, breedte / 2)->kleur = kleur2;
 }
 
-void OthelloBord::randomzet(char kl){
+void OthelloBord::computerzet(char kl){
 	int i = rand() % hoogte;
 	int j = rand() % breedte;
 	while(!magzet(i, j, kl)){

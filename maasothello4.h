@@ -28,7 +28,7 @@ class OthelloBord {
     OthelloBord& operator=(const OthelloBord& bord);
     OthelloBord kopieer();
     void bouwbord();
-    void randomzet(char kl);
+    void computerzet(char kl);
     void menszet(char kl, bool& gedaan, int i, int j);
     void print();
     bool klaar();

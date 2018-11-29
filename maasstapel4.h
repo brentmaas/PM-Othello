@@ -20,6 +20,7 @@ public:
 	Stapel& operator=(const Stapel& s); //Assignment operator
 	OthelloBord& gaTerug(int beurten);
 	void slaop(OthelloBord& bord);
+	int vervolg();
 private:
 	OthelloBord* stapel;
 	int lengte, hoogte, breedte;

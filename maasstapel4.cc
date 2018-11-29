@@ -43,3 +43,20 @@ void Stapel::slaop(OthelloBord& bord){
 	stapel[lengte] = bord.kopieer();
 	lengte++;
 }
+
+int Stapel::vervolg(){
+	int v = 0;
+	OthelloBord bord = stapel[lengte - 1].kopieer();
+	if(bord.klaar()) return 1;
+	for(int i = 0;i < hoogte;i++){
+		for(int j = 0;j < breedte;j++){
+			if(bord.magzet(i, j, bord.getBeurt())){
+				bord.doezet(i, j, bord.getBeurt());
+				slaop(bord);
+				v += vervolg();
+				gaTerug(1);
+			}
+		}
+	}
+	return v;
+}
