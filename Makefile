@@ -1,4 +1,4 @@
-FLAGS = -std=c++17 -Wall -Wextra
+FLAGS = -g -std=c++17 -Wall -Wextra
 
 all: maas4.o maasothello4.o maasstapel4.o
 	g++ -o Assignment4 maasstapel4.o maasothello4.o maas4.o $(FLAGS)

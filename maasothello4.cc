@@ -17,7 +17,7 @@ BordVakje::BordVakje():
 	for(int i = 0;i < 8;i++) buren[i] = nullptr;
 }
 
-OthelloBord::OthelloBord(): ingang(nullptr), hoogte(8), breedte(8), zetten(0), beurt(kleur1), laatsteBeurtI(-1), laatsteBeurtJ(-1){
+OthelloBord::OthelloBord(): hoogte(8), breedte(8), zetten(0), beurt(kleur1), laatsteBeurtI(-1), laatsteBeurtJ(-1){
 	srand(time(0));
 	bouwbord();
 }
