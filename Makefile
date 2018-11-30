@@ -14,3 +14,6 @@ maasstapel4.o: maasstapel4.cc maasstapel4.h
 
 clean:
 	@rm -f maas4.o maasothello4.o maasstapel4.o Assignment4
+
+run:
+	@./Assignment4

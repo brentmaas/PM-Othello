@@ -3,11 +3,13 @@
  * Bestand: maas4.cc
  * Functie: 
  * Getest op: Windows 10 + MSys2 (MinGW64) met g++ 8.2.0
+ *            Ubuntu 16.04 LTS met g++ 5.4.0
  * Getest met: -std=c++17 -Wall -Wextra
- * Laatst bewerkt: 29/11/2018
+ * Laatst bewerkt: 30/11/2018
  */
 
 #include <iostream>
+#include <ctime>
 #include "maasstapel4.h"
 #include "maasothello4.h"
 
@@ -150,6 +152,7 @@ void menu(OthelloBord& bord, Stapel& stapel){
 
 //Functie om het spel te spelen
 void speelspel(bool speler1mens, bool speler2mens, int m, int n){
+	srand(time(0));
 	OthelloBord bord(m, n);
 	Stapel stapel(m, n);
 	stapel.slaop(bord);
@@ -199,7 +202,8 @@ int main(){
 	infoBlokje();
 	
 	//Vraag spelers en dimensies
-	bool speler1mens = vraagSpeler(1, "zwart"), speler2mens = vraagSpeler(2, "wit");
+	bool speler1mens = vraagSpeler(1, "zwart");
+	bool speler2mens = vraagSpeler(2, "wit");
 	int m = vraagDimensie("Hoogte"), n = vraagDimensie("Breedte");
 	
 	speelspel(speler1mens, speler2mens, m, n);
