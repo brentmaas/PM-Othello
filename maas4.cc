@@ -117,6 +117,39 @@ int vraagPositie(OthelloBord& bord, bool isBreedte){
 	return uit;
 }
 
+//Print alle mogelijke zetten voor de huidige beurt
+void printZetten(OthelloBord& bord){
+	std::cout << "Mogelijke zetten:" << std::endl;
+	std::string uit = ""; //Uitvoerbuffer
+	//Lengte van de huidige regel zodat maximaal 80 karakters in een regel zijn
+	int regellengte = 0;
+	//Bekijk alle mogelijke zetten
+	for(int j = 0;j < bord.getBreedte();j++){
+		for(int i = 0;i < bord.getHoogte();i++){
+			if(bord.magzet(i, j, bord.getBeurt())){
+				std::string zet = ""; //Buffer voor zet
+				//Bord klein genoeg voor karakterrepresentatie
+				if(bord.getBreedte() <= 26){
+					zet += ('A' + j); //Breedte
+				}else{ //Bord te groot voor karakterrepresentatie
+					zet += std::to_string(j + 1) + ","; //Breedte
+				}
+				zet += std::to_string(i + 1) + " "; //Hoogte
+				int zetlengte = zet.length();
+				//Regel te lang: nieuwe regel
+				if(regellengte + zetlengte > 80){
+					uit += "\n" + zet;
+					regellengte = zetlengte;
+				}else{ //Regel niet te lang: doorschrijven
+					uit += zet;
+					regellengte += zetlengte;
+				}
+			}
+		}
+	}
+	std::cout << uit << std::endl;
+}
+
 //Print en behandel het menu
 void menu(OthelloBord& bord, Stapel& stapel){
 	//Print beurt
@@ -129,6 +162,7 @@ void menu(OthelloBord& bord, Stapel& stapel){
 				"[V]ervolgpartijen of ga [T]erug" << std::endl;
 		optie = vraagOptie();
 		if(optie == 'Z' || optie == 'z'){ //Doe een zet
+			printZetten(bord);
 			bool gezet = false;
 			while(!gezet){ //Zolang geen geldige zet is gedaan
 				//Vraag posities
