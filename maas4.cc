@@ -155,12 +155,11 @@ void menu(OthelloBord& bord, Stapel& stapel){
 	//Print beurt
 	std::cout << (bord.getBeurt() == kleur1 ? "Zwart" : "Wit")
 			<< " is aan de beurt" << std::endl;
-	char optie;
 	while(true){
 		//Print en vraag opties
 		std::cout << "Doe een [Z]et, bereken het aantal "
 				"[V]ervolgpartijen of ga [T]erug" << std::endl;
-		optie = vraagOptie();
+		char optie = vraagOptie();
 		if(optie == 'Z' || optie == 'z'){ //Doe een zet
 			printZetten(bord);
 			bool gezet = false;
@@ -180,7 +179,28 @@ void menu(OthelloBord& bord, Stapel& stapel){
 			//Twee beurten om langs de beurt van de tegenstander te gaan
 			bord = stapel.gaTerug(2);
 			bord.print(); //Situatie gewijzigd, print bord opnieuw
+		}else{
+			std::cout << "Ongeldige optie!" << std::endl;
 		}
+	}
+}
+
+void printWinnaar(OthelloBord& bord){
+	//Vraag winnaar en verschil op
+	int verschil = 0;
+	char winnaar = bord.winnaar(verschil);
+	
+	if(winnaar == kleur1) std::cout << "Zwart wint";
+	else if(winnaar == kleur2) std::cout << "Wit wint";
+	else std::cout << "Gelijk spel" << std::endl;
+	if(winnaar == kleur1 || winnaar == kleur2){ //Geen gelijk spel
+		//verschil == 0: Iemand kon niet zetten
+		if(verschil == 0) std::cout << " ("
+				<< (winnaar == kleur1 ? "Wit" : "Zwart")
+				<< " kon niet meer zetten)" << std::endl;
+		//Iemand won door een verschil in stenen
+		else std::cout << " (" << verschil << " stenen meer dan "
+				<< (winnaar == kleur1 ? "Wit" : "Zwart") << ")" << std::endl;
 	}
 }
 
@@ -207,28 +227,31 @@ void speelspel(bool speler1mens, bool speler2mens, int m, int n){
 		
 		//Stuur het huidige bord naar de stapel
 		stapel.slaop(bord);
+		
+		if((speler1mens || speler2mens) && bord.klaar()){
+			//Print beurt en bord nogmaals als eindresultaat
+			printbeurt(bord);
+			bord.print();
+			printWinnaar(bord);
+			while(true){
+				std::cout << "Ga [T]erug of [S]top" << std::endl;
+				char optie = vraagOptie();
+				if(optie == 'T' || optie == 't'){
+					bord = stapel.gaTerug(2);
+					break;
+				}else if(optie == 'S' || optie == 's'){
+					break;
+				}
+				std::cout << "Ongeldige optie!" << std::endl;
+			}
+		}
 	}
 	
-	//Print beurt en bord nogmaals als eindresultaat
-	printbeurt(bord);
-	
-	bord.print();
-	
-	//Vraag winnaar en verschil op
-	int verschil = 0;
-	char winnaar = bord.winnaar(verschil);
-	
-	if(winnaar == kleur1) std::cout << "Zwart wint";
-	else if(winnaar == kleur2) std::cout << "Wit wint";
-	else std::cout << "Gelijk spel" << std::endl;
-	if(winnaar == kleur1 || winnaar == kleur2){ //Geen gelijk spel
-		//verschil == 0: Iemand kon niet zetten
-		if(verschil == 0) std::cout << " ("
-				<< (winnaar == kleur1 ? "Wit" : "Zwart")
-				<< " kon niet meer zetten)" << std::endl;
-		//Iemand won door een verschil in stenen
-		else std::cout << " (" << verschil << " stenen meer dan "
-				<< (winnaar == kleur1 ? "Wit" : "Zwart") << ")" << std::endl;
+	if(!(speler1mens || speler2mens)){
+		//Print beurt en bord nogmaals als eindresultaat
+		printbeurt(bord);
+		bord.print();
+		printWinnaar(bord);
 	}
 }
 
