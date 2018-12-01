@@ -233,13 +233,13 @@ void speelspel(bool speler1mens, bool speler2mens, int m, int n){
 			printbeurt(bord);
 			bord.print();
 			printWinnaar(bord);
-			while(true){
+			while(true){ //Vraag of er teruggegaan moet worden of gestopt
 				std::cout << "Ga [T]erug of [S]top" << std::endl;
 				char optie = vraagOptie();
-				if(optie == 'T' || optie == 't'){
+				if(optie == 'T' || optie == 't'){ //Terug
 					bord = stapel.gaTerug(2);
 					break;
-				}else if(optie == 'S' || optie == 's'){
+				}else if(optie == 'S' || optie == 's'){ //Stop
 					break;
 				}
 				std::cout << "Ongeldige optie!" << std::endl;
@@ -247,6 +247,7 @@ void speelspel(bool speler1mens, bool speler2mens, int m, int n){
 		}
 	}
 	
+	//Eindstand staat er al als er gestopt is bij menselijke spelers
 	if(!(speler1mens || speler2mens)){
 		//Print beurt en bord nogmaals als eindresultaat
 		printbeurt(bord);
